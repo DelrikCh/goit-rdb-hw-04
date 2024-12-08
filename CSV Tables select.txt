@@ -1,0 +1,85 @@
+use csv;
+
+alter table customers
+    add CONSTRAINT pk_customers PRIMARY KEY (id);
+
+alter table suppliers
+    add CONSTRAINT pk_suppliers PRIMARY KEY (id);
+
+alter table categories
+    add CONSTRAINT pk_categories PRIMARY KEY (id);
+
+alter table products
+    add CONSTRAINT pk_products PRIMARY KEY (id);
+
+alter table shippers
+    add CONSTRAINT pk_shippers PRIMARY KEY (id);
+
+alter table orders
+    add CONSTRAINT pk_orders PRIMARY KEY (id);
+
+alter table order_details
+    add CONSTRAINT pk_order_details PRIMARY KEY (id);
+
+alter table employees
+    add CONSTRAINT pk_employees PRIMARY KEY (employee_id);
+
+alter table orders
+    add CONSTRAINT fk_orders_customers
+        FOREIGN KEY (customer_id) REFERENCES customers(id)
+            ON DELETE CASCADE;
+
+alter table orders
+    add CONSTRAINT fk_orders_employees
+        FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
+            ON DELETE SET NULL;
+
+alter table orders
+    add CONSTRAINT fk_orders_shippers
+        FOREIGN KEY (shipper_id) REFERENCES shippers(id)
+            ON DELETE SET NULL;
+
+alter table order_details
+    add CONSTRAINT fk_order_details_orders
+        FOREIGN KEY (order_id) REFERENCES orders(id)
+            ON DELETE CASCADE;
+
+alter table order_details
+    add CONSTRAINT fk_order_details_products
+        FOREIGN KEY (product_id) REFERENCES products(id)
+            ON DELETE CASCADE;
+
+alter table products
+    add CONSTRAINT fk_products_categories
+        FOREIGN KEY (category_id) REFERENCES categories(id)
+            ON DELETE SET NULL;
+
+alter table products
+    add CONSTRAINT fk_products_suppliers
+        FOREIGN KEY (supplier_id) REFERENCES suppliers(id)
+            ON DELETE SET NULL;
+
+select
+	o.id as order_id,
+    o.date as order_date,
+    c.name as customer_name,
+    c.contact as customer_contact,
+    c.address as customer_address,
+    e.first_name as employee_first_name,
+    e.last_name as employee_last_name,
+    s.name as shipper_name,
+    p.name as product_name,
+    p.unit as product_unit,
+    p.price as product_price,
+    cat.name as category_name,
+    sup.name as supplier_name,
+    od.quantity as quantity
+from
+    orders o
+        inner join customers c on o.customer_id = c.id
+        inner join employees e on o.employee_id = e.employee_id
+        inner join shippers s on o.shipper_id = s.id
+        inner join order_details od on o.id = od.order_id
+        inner join products p on od.product_id = p.id
+        inner join categories cat on p.category_id = cat.id
+        inner join suppliers sup on p.supplier_id = sup.id;

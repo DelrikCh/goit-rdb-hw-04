@@ -1,0 +1,73 @@
+USE LibraryManagement;
+
+-- Insert
+INSERT INTO authors (author_name) VALUES
+                                      ('Miguel de Cervantes'),
+                                      ('J.R.R. Tolkien');
+
+INSERT INTO genres (genre_name) VALUES
+                                    ('Adventure'),
+                                    ('Fantasy');
+
+INSERT INTO books (title, publication_year, author_id, genre_id) VALUES
+                                                                     ('Don Quixote', 1905, 1, 1),
+                                                                     ('The Lord of the Rings', 1954, 2, 2);
+
+INSERT INTO users (username, email) VALUES
+                                        ('john_doe', 'john.doe@example.com'),
+                                        ('jane_doe', 'jane.doe@example.com');
+
+INSERT INTO borrowed_books (book_id, user_id, borrow_date, return_date) VALUES
+                                                                            (1, 1, '2024-12-01', '2024-12-07'),
+                                                                            (2, 2, '2024-12-07', NULL);
+
+-- Select
+SELECT 
+    bb.borrow_id,
+    b.book_id,
+    b.title AS book_title,
+    b.publication_year,
+    a.author_id,
+    a.author_name,
+    g.genre_id,
+    g.genre_name,
+    u.user_id,
+    u.username,
+    u.email,
+    bb.borrow_date,
+    bb.return_date
+FROM 
+    borrowed_books bb
+JOIN 
+    books b ON bb.book_id = b.book_id
+JOIN 
+    authors a ON b.author_id = a.author_id
+JOIN 
+    genres g ON b.genre_id = g.genre_id
+JOIN 
+    users u ON bb.user_id = u.user_id;
+
+SELECT 
+    bb.borrow_id,
+    b.book_id,
+    b.title AS book_title,
+    b.publication_year,
+    a.author_id,
+    a.author_name,
+    g.genre_id,
+    g.genre_name,
+    u.user_id,
+    u.username,
+    u.email,
+    bb.borrow_date,
+    bb.return_date
+FROM 
+    borrowed_books bb
+JOIN 
+    books b ON bb.book_id = b.book_id
+JOIN 
+    authors a ON b.author_id = a.author_id
+JOIN 
+    genres g ON b.genre_id = g.genre_id
+JOIN 
+    users u ON bb.user_id = u.user_id;

@@ -1,0 +1,27 @@
+use csv;
+
+select
+	o.id as order_id,
+    o.date as order_date,
+    c.name as customer_name,
+    c.contact as customer_contact,
+    c.address as customer_address,
+    e.employee_id as employee_id,
+    e.first_name as employee_first_name,
+    e.last_name as employee_last_name,
+    s.name as shipper_name,
+    p.name as product_name,
+    p.unit as product_unit,
+    p.price as product_price,
+    cat.name as category_name,
+    sup.name as supplier_name,
+    od.quantity as quantity
+from
+    orders o
+        inner join customers c on o.customer_id = c.id
+        inner join employees e on o.employee_id = e.employee_id and e.employee_id between 3 and 10
+        inner join shippers s on o.shipper_id = s.id
+        inner join order_details od on o.id = od.order_id
+        inner join products p on od.product_id = p.id
+        inner join categories cat on p.category_id = cat.id
+        inner join suppliers sup on p.supplier_id = sup.id

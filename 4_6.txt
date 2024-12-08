@@ -1,0 +1,13 @@
+use csv;
+
+select
+	cat.name,
+    count(*) as 'rows',
+    avg(od.quantity) as avg_quantity
+from
+    order_details od
+		inner join products p on od.product_id = p.id
+		inner join categories cat on p.category_id = cat.id
+group by cat.name
+having avg_quantity > 21
+order by avg_quantity desc;

@@ -1,0 +1,13 @@
+use csv;
+
+select
+	count(*)
+from
+    orders o
+        inner join customers c on o.customer_id = c.id
+        inner join employees e on o.employee_id = e.employee_id
+        inner join shippers s on o.shipper_id = s.id
+        inner join order_details od on o.id = od.order_id
+        inner join products p on od.product_id = p.id
+        inner join categories cat on p.category_id = cat.id
+        inner join suppliers sup on p.supplier_id = sup.id;
